@@ -1,0 +1,71 @@
+{
+  "case": {
+    "body": [
+      "case \"$1\" in",
+      "help)",
+      "  help",
+      "  exit 0",
+      "  ;;",
+      "esac"
+    ],
+    "prefix": "case"
+  },
+  "getopts": {
+    "body": [
+      "while getopts \":h-\" opt; do",
+      "  case \"\\$opt\" in",
+      "  h)",
+      "    help",
+      "    exit 0",
+      "    ;;",
+      "  -)",
+      "    break",
+      "    ;;",
+      "  ?)",
+      "    echo \"Error: Invalid option '-\\$OPTARG'\" >&2",
+      "    exit 1",
+      "    ;;",
+      "  esac",
+      "done",
+      "",
+      "shift \\$((OPTIND - 1))"
+    ],
+    "prefix": "getopts"
+  },
+  "help-func": {
+    "body": [
+      "function help() {",
+      "cat << EOF",
+      "$1",
+      "",
+      "Usage: ",
+      "  $2 FLAG <FLAG_INPUT> COMMAND INPUT",
+      "  $2 -h | $2 help",
+      "",
+      "Commands:",
+      "help                        Displays this message and exits",
+      "",
+      "Flags:",
+      "-h                          Displays this message and exits",
+      "EOF",
+      "}"
+    ],
+    "prefix": "help-func"
+  },
+  "isroot": {
+    "body": [
+      "if [ \\$(id -u) -ne 0 ]; then",
+      "   $1",
+      "fi"
+    ],
+    "prefix": "isroot"
+  },
+  "sh-source": {
+    "body": "source \"\\$(dirname \"\\$(realpath \\$0)\")/lib/$0",
+    "prefix": "sh-source"
+  },
+  "shebang": {
+    "body": "#!/usr/bin/env bash",
+    "prefix": "shebang"
+  }
+}

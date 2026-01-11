@@ -1,0 +1,47 @@
+{
+  "elif": {
+    "body": [
+      "else if (${1:true}) {",
+      "        $2",
+      "}"
+    ],
+    "prefix": "elif"
+  },
+  "else": {
+    "body": [
+      "else {",
+      "        $1",
+      "}"
+    ],
+    "prefix": "else"
+  },
+  "if": {
+    "body": [
+      "if (${1:true}) {",
+      "        $2",
+      "}"
+    ],
+    "prefix": "if"
+  },
+  "ifi": {
+    "body": "if (${1:true}) $2;",
+    "prefix": "ifi"
+  },
+  "main": {
+    "body": [
+      "int main(int argc, char *argv[]) {",
+      "        $1",
+      "        return EXIT_SUCCESS;",
+      "}"
+    ],
+    "prefix": "main"
+  },
+  "ret": {
+    "body": "return $1;",
+    "prefix": "ret"
+  },
+  "t:": {
+    "body": "$1 ? ${2:true} : ${3:false}",
+    "prefix": "t:"
+  }
+}

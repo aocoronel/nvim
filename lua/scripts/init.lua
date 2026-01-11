@@ -1,0 +1,5 @@
+require "scripts.checkbox"
+require "scripts.insert-time"
+require "scripts.remove-blank"
+require "scripts.toggle-wrap"
+require "scripts.oil"
