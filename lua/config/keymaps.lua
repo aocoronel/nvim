@@ -312,45 +312,13 @@ nmap(
 
 -- Git
 
-nmap("]c", function()
-    if vim.wo.diff then
-        vim.cmd.normal { "]c", bang = true }
-    else
-        gitsigns.nav_hunk "next"
-    end
-end, { desc = "Jump to next git [c]hange" })
-
-nmap("[c", function()
-    if vim.wo.diff then
-        vim.cmd.normal { "[c", bang = true }
-    else
-        gitsigns.nav_hunk "prev"
-    end
-end, { desc = "Jump to previous git [c]hange" })
-
-imap(
-    "<leader>hs",
-    function() gitsigns.stage_hunk { vim.fn.line ".", vim.fn.line "v" } end,
-    { desc = "git [s]tage hunk" }
-)
-imap(
-    "<leader>hr",
-    function() gitsigns.reset_hunk { vim.fn.line ".", vim.fn.line "v" } end,
-    { desc = "git [r]eset hunk" }
-)
-
-nmap("<leader>gs", "<CMD>Gitsigns stage_hunk<CR>", { desc = "git [s]tage hunk" })
-nmap("<leader>gB", "<CMD>Gitsigns stage_buffer<CR>", { desc = "git [S]tage buffer" })
-nmap("<leader>gr", "<CMD>Gitsigns reset_hunk<CR>", { desc = "git [r]eset hunk" })
-nmap("<leader>gu", "<CMD>Gitsigns stage_hunk<CR>", { desc = "git [u]ndo stage hunk" })
-nmap("<leader>gR", "<CMD>Gitsigns reset_buffer<CR>", { desc = "git [R]eset buffer" })
-nmap("<leader>gp", "<CMD>Gitsigns preview_hunk<CR>", { desc = "git [p]review hunk" })
-nmap("<leader>gb", "<CMD>Gitsigns blame_line<CR>", { desc = "git [b]lame line" })
-nmap("<leader>gd", "<CMD>Gitsigns diffthis<CR>", { desc = "git [d]iff against index" })
-nmap("<leader>gD", "<CMD>Gitsigns diffthis '@' end<CR>", { desc = "git [D]iff against last commit" })
-
-nmap("<leader>tb", "<CMD>Gitsigns toggle_current_line_blame<CR>", { desc = "[T]oggle git show [b]lame line" })
-nmap("<leader>tD", "<CMD>Gitsigns preview_hunk_inline<CR>", { desc = "[T]oggle git show [D]eleted" })
+nmap("<leader>gs", "<CMD>Git add -p<CR>", { desc = "git [s]tage hunk" })
+nmap("<leader>gS", "<CMD>Git add<CR>", { desc = "git [S]tage file" })
+nmap("<leader>gr", "<CMD>Git rm --cached<CR>", { desc = "git [r]eset file" })
+nmap("<leader>gb", "<CMD>Git blame<CR>", { desc = "git [b]lame line" })
+nmap("<leader>gd", "<CMD>Git diff<CR>", { desc = "git [d]iff" })
+nmap("<leader>gD", "<CMD>Git difftool<CR>", { desc = "git [D]ifftool" })
+nmap("<leader>gm", "<CMD>Git mergetool<CR>", { desc = "git [m]ergetool" })
 
 -- lazy.nvim
 
