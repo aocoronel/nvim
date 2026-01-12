@@ -25,7 +25,7 @@ return {
 
         set("x", "M", mc.matchCursors) -- match new cursors within visual selections by regex.
 
-        set("n", "<leader>gv", mc.restoreCursors) -- bring back cursors if you accidentally clear them
+        set("n", "<leader>gv", mc.restoreCursors, { desc = "Restore Cursors" }) -- bring back cursors if you accidentally clear them
 
         set({ "n", "x" }, "<leader>A", mc.matchAllAddCursors) -- Add a cursor for all matches of cursor word/selection in the document.
 
