@@ -388,4 +388,5 @@ vmap("<leader>se", function()
     vim.cmd("Oil " .. text)
 end)
 
-nmap("<leader>gw", "<CMD>HopWord<CR>", { remap = true })
+vmap("ga", ":EasyAlign<CR>" ) -- save file
+nmap("ga", "<CMD>EasyAlign<CR>", { desc = "Quit All" })
