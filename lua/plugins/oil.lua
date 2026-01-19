@@ -26,9 +26,7 @@ local config = function()
         prompt_save_on_select_new_entry = true,
         cleanup_delay_ms = 2000,
         lsp_file_methods = {
-            enabled = true,
-            timeout_ms = 1000,
-            autosave_changes = false,
+            enabled = false,
         },
         constrain_cursor = "editable",
         watch_for_changes = false,
@@ -65,13 +63,6 @@ local config = function()
                 { "name", "asc" },
             },
             highlight_filename = function(entry, is_hidden, is_link_target, is_link_orphan) return nil end,
-        },
-        extra_scp_args = {},
-        extra_s3_args = {},
-        git = {
-            add = function(path) return false end,
-            mv = function(src_path, dest_path) return false end,
-            rm = function(path) return false end,
         },
         float = {
             padding = 2,
