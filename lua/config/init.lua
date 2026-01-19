@@ -39,10 +39,10 @@ require("lazy").setup {
         rtp = {
             -- disable some rtp plugins
             disabled_plugins = {
-                -- "2html_plugin",
-                -- "bugreport",
+                "2html_plugin",
+                "bugreport",
                 -- "compiler",
-                -- "ftplugin",
+                "ftplugin",
                 -- "getscript",
                 -- "getscriptPlugin",
                 "gzip",
@@ -59,14 +59,14 @@ require("lazy").setup {
                 -- "spellfile_plugin",
                 -- "synmenu",
                 -- "syntax",
-                -- "tar",
-                -- "tarPlugin",
-                -- "tohtml",
+                "tar",
+                "tarPlugin",
+                "tohtml",
                 "tutor",
                 "vimball",
                 "vimballPlugin",
-                -- "zip",
-                -- "zipPlugin",
+                "zip",
+                "zipPlugin",
             },
         },
         change_detection = {
