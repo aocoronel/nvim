@@ -26,7 +26,7 @@ local config = function()
       hidden_buffer = false,
       focus_compilation_buffer = false,
       auto_scroll = true,
-      use_circula_error_navigation = true,
+      use_circular_error_navigation = true,
       debug = false,
       use_pseudo_terminal = false,
   }
