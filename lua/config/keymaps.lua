@@ -28,9 +28,13 @@ imap("<M-b>", "<C-o>b", { noremap = true }) -- backward word
 imap("<M-a>", "<C-o>(", { noremap = true }) -- move to start of sentence (approx)
 imap("<M-e>", "<C-o>)", { noremap = true }) -- move to end of sentence (approx)
 
+imap("<C-/>", "<C-o>u", { noremap = true }) -- undo
+
 imap("<C-d>", "<Del>", { noremap = true }) -- Delete next char
 imap("<C-h>", "<BS>", { noremap = true }) -- Delete previous char
 imap("<C-k>", "<C-o>d$", { noremap = true }) -- kill to end of line
+imap("<C-K>", "<C-o>dd", { noremap = true }) -- kill line
+-- imap("<C-w>", "<C-o>c", { noremap = true }) -- kill
 imap("<C-y>", "<C-o>p", { noremap = true }) -- yank
 
 imap("<C-t>", "<Esc>xp i", { noremap = true }) -- transpose chars
