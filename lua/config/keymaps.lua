@@ -30,7 +30,7 @@ imap("<M-e>", "<C-o>)", { noremap = true }) -- move to end of sentence (approx)
 
 imap("<C-d>", "<Del>", { noremap = true }) -- Delete next char
 imap("<C-h>", "<BS>", { noremap = true }) -- Delete previous char
-imap("<C-l>", "<C-o>d$", { noremap = true }) -- kill to end of line
+imap("<C-k>", "<C-o>d$", { noremap = true }) -- kill to end of line
 imap("<C-y>", "<C-o>p", { noremap = true }) -- yank
 
 imap("<C-t>", "<Esc>xp i", { noremap = true }) -- transpose chars

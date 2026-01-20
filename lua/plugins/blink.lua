@@ -3,17 +3,21 @@ return {
     event = { "InsertEnter", "CmdlineEnter" },
     version = "1.*",
     dependencies = {
-        -- 'folke/lazydev.nvim',
-        {
-            "saghen/blink.compat",
-            optional = true,
-            opts = {},
-            version = not vim.g.lazyvim_blink_main and "*",
-        },
+        "saghen/blink.compat",
+        optional = true,
+        opts = {},
+        version = not vim.g.lazyvim_blink_main and "*",
     },
     opts = {
         keymap = {
-            preset = "enter",
+            preset = 'none',
+            ['<CR>'] = { 'accept', 'fallback' },
+            ['<Tab>'] = { 'snippet_forward', 'fallback' },
+            ['<S-Tab>'] = { 'snippet_backward', 'fallback' },
+            ['<C-p>'] = { 'select_prev', 'fallback_to_mappings' },
+            ['<C-n>'] = { 'select_next', 'fallback_to_mappings' },
+            ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
+            ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
         },
         appearance = {
             nerd_font_variant = "mono",
@@ -23,9 +27,6 @@ return {
         },
         sources = {
             default = { "lsp", "path", "snippets", "buffer" },
-            -- providers = {
-            --   lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
-            -- },
         },
         fuzzy = { implementation = "lua" },
         signature = { enabled = true },
