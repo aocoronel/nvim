@@ -2,12 +2,6 @@ return {
     "saghen/blink.cmp",
     event = { "InsertEnter", "CmdlineEnter" },
     version = "1.*",
-    dependencies = {
-        "saghen/blink.compat",
-        optional = true,
-        opts = {},
-        version = not vim.g.lazyvim_blink_main and "*",
-    },
     opts = {
         keymap = {
             preset = 'none',
