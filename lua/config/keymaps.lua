@@ -338,16 +338,6 @@ nmap(
     { desc = "[S]earch [/] in Open Files" }
 )
 
--- Git
-
-nmap("<leader>gs", "<CMD>Git add -p<CR>", { desc = "git [s]tage hunk" })
-nmap("<leader>gS", "<CMD>Git add<CR>", { desc = "git [S]tage file" })
-nmap("<leader>gr", "<CMD>Git rm --cached<CR>", { desc = "git [r]eset file" })
-nmap("<leader>gb", "<CMD>Git blame<CR>", { desc = "git [b]lame line" })
-nmap("<leader>gd", "<CMD>Git diff<CR>", { desc = "git [d]iff" })
-nmap("<leader>gD", "<CMD>Git difftool<CR>", { desc = "git [D]ifftool" })
-nmap("<leader>gm", "<CMD>Git mergetool<CR>", { desc = "git [m]ergetool" })
-
 -- lazy.nvim
 
 nmap("<leader>l", "<CMD>Lazy<CR>", { desc = "Lazy" })
