@@ -1,20 +1,22 @@
+autocmd = vim.api.nvim_create_autocmd
+
 -- Remove whitespace on file save
 local CleanOnSave = vim.api.nvim_create_augroup("CleanOnSave", {})
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+autocmd({ "BufWritePre" }, {
     group = CleanOnSave,
     pattern = "*",
     command = [[%s/\s\+$//e]],
 })
 
 -- Kickstart highlight operation
-vim.api.nvim_create_autocmd("TextYankPost", {
+autocmd("TextYankPost", {
     desc = "Highlight when yanking (copying) text",
     group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
     callback = function() vim.hl.on_yank() end,
 })
 
 -- Enable spelling
-vim.api.nvim_create_autocmd("FileType", {
+autocmd("FileType", {
     pattern = { "text", "plaintex", "gitcommit", "markdown" },
     callback = function()
         vim.opt_local.spelllang = { "pt", "en_us" }
@@ -27,7 +29,7 @@ vim.api.nvim_create_autocmd("FileType", {
 local function augroup(name) return vim.api.nvim_create_augroup("lazyvim_" .. name, { clear = true }) end
 
 -- Auto resize windows
-vim.api.nvim_create_autocmd({ "VimResized" }, {
+autocmd({ "VimResized" }, {
     group = augroup "resize_splits",
     callback = function()
         local current_tab = vim.fn.tabpagenr()
@@ -37,7 +39,7 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
 })
 
 -- Remember last location
-vim.api.nvim_create_autocmd("BufReadPost", {
+autocmd("BufReadPost", {
     group = augroup "last_loc",
     callback = function(event)
         local exclude = { "gitcommit" }
@@ -51,7 +53,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 -- Easy quit some buffers with 'q'
-vim.api.nvim_create_autocmd("FileType", {
+autocmd("FileType", {
     group = augroup "close_with_q",
     pattern = {
         "PlenaryTestPopup",
@@ -85,19 +87,19 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
-vim.api.nvim_create_autocmd("FileType", {
+autocmd("FileType", {
     group = augroup "man_unlisted",
     pattern = { "man" },
     callback = function(event) vim.bo[event.buf].buflisted = false end,
 })
 
-vim.api.nvim_create_autocmd({ "FileType" }, {
+autocmd({ "FileType" }, {
     group = augroup "json_conceal",
     pattern = { "json", "jsonc", "json5" },
     callback = function() vim.opt_local.conceallevel = 0 end,
 })
 
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+autocmd({ "BufWritePre" }, {
     group = augroup "auto_create_dir",
     callback = function(event)
         if event.match:match "^%w%w+:[\\/][\\/]" then return end
