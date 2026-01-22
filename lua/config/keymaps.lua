@@ -1,6 +1,21 @@
+local map = function(map, lhs, rhs, opts) vim.keymap.set(map, lhs, rhs, opts) end -- Insert map
 local imap = function(lhs, rhs, opts) vim.keymap.set("i", lhs, rhs, opts) end -- Insert map
 local nmap = function(lhs, rhs, opts) vim.keymap.set("n", lhs, rhs, opts) end -- Normal map
 local vmap = function(lhs, rhs, opts) vim.keymap.set("v", lhs, rhs, opts) end -- Visual map
+
+local function map_keep_line(map, lhs, normal_cmd, opts)
+    opts = opts or {}
+    vim.keymap.set(map, lhs, function()
+        local pos = vim.api.nvim_win_get_cursor(0)
+        vim.cmd("normal! " .. normal_cmd)
+        vim.api.nvim_win_set_cursor(0, pos)
+    end, opts)
+end
+
+-- Keep cursor position after action
+local function imap_keep_line(lhs, normal_cmd, opts) map_keep_line("i", lhs, normal_cmd, opts) end
+local function vmap_keep_line(lhs, normal_cmd, opts) map_keep_line("v", lhs, normal_cmd, opts) end
+local function nmap_keep_line(lhs, normal_cmd, opts) map_keep_line("n", lhs, normal_cmd, opts) end
 
 nmap("<leader><tab>s", ":source %<CR>", { desc = "Source lua file" })
 
@@ -11,46 +26,59 @@ nmap("<leader>qQ", "<CMD>qa!<CR>", { desc = "Quit All (No Save)" })
 
 -- Emacs-like insert mode keybindings
 
-imap("<C-c><C-s>", "<C-o>:w", { noremap = true }) -- save file
+--- Motions
 
-imap("<C-f>", "<Right>", { noremap = true }) -- forward char
-imap("<C-b>", "<Left>", { noremap = true }) -- backward char
-imap("<C-n>", "<Down>", { noremap = true }) -- next line
-imap("<C-p>", "<Up>", { noremap = true }) -- previous line
-imap("<C-a>", "<Home>", { noremap = true }) -- beginning of line
-imap("<C-e>", "<End>", { noremap = true }) -- end of line
+map({ "n", "i", "v" }, "<C-b>", "<Left>", { noremap = true }) -- backward char
+map({ "n", "i", "v" }, "<C-p>", "<Up>", { noremap = true }) -- previous line
+map({ "n", "i", "v" }, "<C-n>", "<Down>", { noremap = true }) -- next line
+map({ "n", "i", "v" }, "<C-f>", "<Right>", { noremap = true }) -- forward char
 
-imap("<C-v>", "<C-o><C-d>", { silent = true }) -- Move half page down
-imap("<M-v>", "<C-o><C-u>", { silent = true }) -- Move half page up
+map({ "n", "i", "v" }, "<C-a>", "<Home>", { noremap = true }) -- beginning of line
+map({ "n", "i", "v" }, "<C-e>", "<End>", { noremap = true }) -- end of line
+
+map({ "n", "i", "v" }, "C-v", "<C-o><C-d>", { silent = true }) -- Move half page down
+map({ "n", "i", "v" }, "M-v", "<C-o><C-u>", { silent = true }) -- Move half page up
 
 imap("<M-f>", "<C-o>w", { noremap = true }) -- forward word
 imap("<M-b>", "<C-o>b", { noremap = true }) -- backward word
-imap("<M-a>", "<C-o>(", { noremap = true }) -- move to start of sentence (approx)
-imap("<M-e>", "<C-o>)", { noremap = true }) -- move to end of sentence (approx)
+imap("<M-a>", "<C-o>(", { noremap = true }) -- move to start of sentence
+imap("<M-e>", "<C-o>)", { noremap = true }) -- move to end of sentence
+imap("<M-lt>", "<C-o>gg", { noremap = true }) -- move to start of buffer M-<
+imap("<M->>", "<C-o>G", { noremap = true }) -- move to end of buffer M->
 
 imap("<C-/>", "<C-o>u", { noremap = true }) -- undo
+imap("<C-\\>", "<C-o>R", { noremap = true }) -- redo
+
+imap("<C-s>", "<C-o>/", { noremap = true }) -- search
+vmap("<C-x>s", "y/<C-r>\"<CR>", { noremap = true }) -- search selection
+
+imap("<M-x>", "<C-o>:", { noremap = true }) -- IDO?
 
 imap("<C-d>", "<Del>", { noremap = true }) -- Delete next char
-imap("<C-h>", "<BS>", { noremap = true }) -- Delete previous char
 imap("<C-k>", "<C-o>d$", { noremap = true }) -- kill to end of line
-imap("<C-K>", "<C-o>dd", { noremap = true }) -- kill line
--- imap("<C-w>", "<C-o>c", { noremap = true }) -- kill
-imap("<C-y>", "<C-o>p", { noremap = true }) -- yank
+imap("<C-M-k>", "<C-o>dd", { noremap = true }) -- kill line
 
-imap("<C-t>", "<Esc>xp i", { noremap = true }) -- transpose chars
-imap("<C-u>", "<C-o>dd i", { noremap = true }) -- Delete line
+imap("<C-t>", "<Esc>xpi", { noremap = true }) -- transpose chars
+imap("<M-t>", "<Esc>daWWPi", { noremap = true }) -- transpose words
 
-imap("<M-d>", "<Esc>dw i", { noremap = true }) -- kill word forward
-imap("<M-h>", "<Esc>db i", { noremap = true }) -- kill word backward
-imap("<M-BS>", "<Esc>db i", { noremap = true }) -- kill word backward
-imap("<M-t>", "<Esc>bdewP i", { noremap = true }) -- transpose words
+imap("<M-d>", "<Esc>dwi", { noremap = true }) -- kill word forward
+imap("<M-BS>", "<Esc>dbi", { noremap = true }) -- kill word backward
 
-imap("<M-u>", "<Esc>gUiw i", { noremap = true }) -- upcase word
-imap("<M-l>", "<Esc>guiw i", { noremap = true }) -- downcase word
-imap("<M-c>", "<Esc>gUiw~ i", { noremap = true }) -- capitalize word
+imap("<M-u>", "<Esc>gUiwi", { noremap = true }) -- upcase word
+imap("<M-l>", "<Esc>guiwi", { noremap = true }) -- downcase word
+imap("<M-c>", "<Esc>gUiw~i", { noremap = true }) -- capitalize word
 
 imap("<C-_>", "<C-o>u", { noremap = true }) -- undo
 imap("<C-\\>", "<C-o><C-r>", { noremap = true }) -- redo
+
+-- Visual
+
+imap("<C-Space>", "<Esc>v", { noremap = true, silent = true }) -- Insert to Visual Mode
+vmap("<C-Space>", "<Esc>i", { noremap = true, silent = true }) -- Visual to Insert Mode
+
+vmap("<C-w>", "c<Esc>i", { noremap = true }) -- kill
+vmap("<C-y>", "p<Esc>i", { noremap = true }) -- yank
+vmap("<M-w>", "y<Esc>i", { noremap = true }) -- copy
 
 -- Move current line up
 imap("<M-p>", function()
@@ -65,11 +93,7 @@ imap("<M-n>", function()
 end, { silent = true })
 
 -- Duplicate line
-imap("<M-D>", function()
-    local pos = vim.api.nvim_win_get_cursor(0)
-    vim.cmd "normal! yyp"
-    vim.api.nvim_win_set_cursor(0, pos)
-end, { silent = true })
+imap_keep_line("<M-,>", "yyP", { silent = true })
 
 nmap("<C-d>", "<C-d>zz", { desc = "Page Down and Center" }) -- Better Page Move: Page Down and Center
 nmap("<C-u>", "<C-u>zz", { desc = "Page Up and Center" }) -- Better Page Move: Page Up and Center
@@ -186,11 +210,11 @@ nmap("<leader><tab>d", "<CMD>tabclose<CR>", { desc = "Close Tab" })
 nmap("<leader><tab>[", "<CMD>tabprevious<CR>", { desc = "Previous Tab" })
 
 vim.api.nvim_create_user_command("Duck", function()
-  local query = vim.fn.input("DuckDuckGo search: ")
-  if query == "" then return end
+    local query = vim.fn.input "DuckDuckGo search: "
+    if query == "" then return end
 
-  local url = "https://duckduckgo.com/?q=" .. vim.fn.escape(query, " ")
-  vim.fn.jobstart({ "xdg-open", url }, { detach = true })
+    local url = "https://duckduckgo.com/?q=" .. vim.fn.escape(query, " ")
+    vim.fn.jobstart({ "xdg-open", url }, { detach = true })
 end, {})
 
 nmap("<leader>gx", ":!setsid xdg-open <c-r><c-a>", { desc = "Follow URL" })
@@ -360,5 +384,5 @@ vmap("<leader>se", function()
     vim.cmd("Oil " .. text)
 end)
 
-vmap("ga", ":EasyAlign<CR>" ) -- save file
+vmap("ga", ":EasyAlign<CR>") -- save file
 nmap("ga", "<CMD>EasyAlign<CR>", { desc = "Quit All" })
