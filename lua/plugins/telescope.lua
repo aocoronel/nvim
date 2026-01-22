@@ -24,12 +24,15 @@ local config = function()
             find_files = {
                 previewer = true,
                 hidden = true,
+                theme = "ivy",
             },
             live_grep = {
                 previewer = true,
+                theme = "ivy",
             },
             buffers = {
                 previewer = true,
+                theme = "ivy",
             },
         },
         keys = {},
