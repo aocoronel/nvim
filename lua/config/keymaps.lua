@@ -17,6 +17,16 @@ local function imap_keep_line(lhs, normal_cmd, opts) map_keep_line("i", lhs, nor
 local function vmap_keep_line(lhs, normal_cmd, opts) map_keep_line("v", lhs, normal_cmd, opts) end
 local function nmap_keep_line(lhs, normal_cmd, opts) map_keep_line("n", lhs, normal_cmd, opts) end
 
+function isearch_selected()
+    vim.cmd 'normal! "ly'
+    vim.api.nvim_feedkeys("/", "n", false)
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-r>"<CR>', true, false, true), "n", false)
+end
+
+vmap("<leader>/", function() isearch_selected() end, {
+    desc = "Search yanked text forward",
+})
+
 nmap("<leader><tab>s", ":source %<CR>", { desc = "Source lua file" })
 
 -- How to quit nvim?
@@ -50,7 +60,7 @@ imap("<C-/>", "<C-o>u", { noremap = true }) -- undo
 imap("<C-\\>", "<C-o>R", { noremap = true }) -- redo
 
 imap("<C-s>", "<C-o>/", { noremap = true }) -- search
-vmap("<C-x>s", "y/<C-r>\"<CR>", { noremap = true }) -- search selection
+vmap("<C-x>s", 'y/<C-r>"<CR>', { noremap = true }) -- search selection
 
 imap("<M-x>", "<C-o>:", { noremap = true }) -- IDO?
 
