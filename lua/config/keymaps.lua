@@ -18,10 +18,10 @@ local function vmap_keep_line(lhs, normal_cmd, opts) map_keep_line("v", lhs, nor
 local function nmap_keep_line(lhs, normal_cmd, opts) map_keep_line("n", lhs, normal_cmd, opts) end
 
 -- Emacs-like cancel
-vim.api.nvim_set_keymap('c', '<C-g>', '<C-c>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("c", "<C-g>", "<C-c>", { noremap = true, silent = true })
 
 -- Open terminal in CWD
-vim.keymap.set('n', '<leader>tt', function()
+vim.keymap.set("n", "<leader>tt", function()
     local cwd = vim.fn.getcwd()
     os.execute("cd " .. cwd .. " && st &")
 end, { desc = "Open st in current directory" })
@@ -31,6 +31,24 @@ function isearch_selected()
     vim.api.nvim_feedkeys("/", "n", false)
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-r>"<CR>', true, false, true), "n", false)
 end
+
+local function get_selection()
+    local s_start = vim.fn.getpos "."
+    local s_end = vim.fn.getpos "v"
+    local lines = vim.fn.getregion(s_start, s_end)
+    return lines
+end
+
+function ripgrep_selected()
+    local selection = get_selection()
+    local text = vim.fn.escape(selection[1], [[\/]])
+
+    require("compile-mode").compile {
+        args = "grep -rn " .. text,
+    }
+end
+
+vmap("<leader>r", function() ripgrep_selected() end, { desc = "Ripgrep selected" })
 
 vmap("<leader>/", function() isearch_selected() end, {
     desc = "Search yanked text forward",
