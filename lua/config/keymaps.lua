@@ -17,6 +17,15 @@ local function imap_keep_line(lhs, normal_cmd, opts) map_keep_line("i", lhs, nor
 local function vmap_keep_line(lhs, normal_cmd, opts) map_keep_line("v", lhs, normal_cmd, opts) end
 local function nmap_keep_line(lhs, normal_cmd, opts) map_keep_line("n", lhs, normal_cmd, opts) end
 
+-- Emacs-like cancel
+vim.api.nvim_set_keymap('c', '<C-g>', '<C-c>', { noremap = true, silent = true })
+
+-- Open terminal in CWD
+vim.keymap.set('n', '<leader>tt', function()
+    local cwd = vim.fn.getcwd()
+    os.execute("cd " .. cwd .. " && st &")
+end, { desc = "Open st in current directory" })
+
 function isearch_selected()
     vim.cmd 'normal! "ly'
     vim.api.nvim_feedkeys("/", "n", false)
