@@ -50,9 +50,11 @@ end
 
 vmap("<leader>r", function() ripgrep_selected() end, { desc = "Ripgrep selected" })
 
-vmap("<leader>/", function() isearch_selected() end, {
+vmap("<leader>s", function() isearch_selected() end, {
     desc = "Search yanked text forward",
 })
+
+nmap("s", "/", { desc = "Isearch" })
 
 nmap("<leader><tab>s", ":source %<CR>", { desc = "Source lua file" })
 
@@ -135,8 +137,8 @@ imap_keep_line("<M-,>", "yyP", { silent = true })
 nmap("<C-d>", "<C-d>zz", { desc = "Page Down and Center" }) -- Better Page Move: Page Down and Center
 nmap("<C-u>", "<C-u>zz", { desc = "Page Up and Center" }) -- Better Page Move: Page Up and Center
 
-nmap("<M-h>", ":cnext<CR>", { desc = "Next QuickFix" })
-nmap("<M-l>", ":cprev<CR>", { desc = "Previous QuickFix" })
+nmap("<M-h>", ":cprev<CR>", { desc = "Previous QuickFix" })
+nmap("<M-l>", ":cnext<CR>", { desc = "Next QuickFix" })
 
 nmap("<leader>cx", ":!chmod +x %<CR>", { desc = "Make Executable" })
 
