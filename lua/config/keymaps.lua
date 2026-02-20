@@ -26,6 +26,12 @@ vim.keymap.set("n", "<leader>tt", function()
     os.execute("cd " .. cwd .. " && st &")
 end, { desc = "Open st in current directory" })
 
+local config = { virtual_text = false, signs = false, underline = false }
+vim.keymap.set('n', '<leader>tv', function()
+  config.virtual_text = not config.virtual_text
+  vim.diagnostic.config(config)
+end)
+
 function isearch_selected()
     vim.cmd 'normal! "ly'
     vim.api.nvim_feedkeys("/", "n", false)
