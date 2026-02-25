@@ -17,6 +17,17 @@ local function imap_keep_line(lhs, normal_cmd, opts) map_keep_line("i", lhs, nor
 local function vmap_keep_line(lhs, normal_cmd, opts) map_keep_line("v", lhs, normal_cmd, opts) end
 local function nmap_keep_line(lhs, normal_cmd, opts) map_keep_line("n", lhs, normal_cmd, opts) end
 
+local function emap(map, lhs, normal_cmd, opts)
+    opts = opts or {}
+    vim.keymap.set(map, lhs, function()
+        vim.cmd("normal! " .. normal_cmd)
+    end, opts)
+end
+
+local function eimap(lhs, normal_cmd)  emap('i', lhs, normal_cmd, { noremap = true, silent = true }) end
+local function evmap(lhs, normal_cmd)  emap('v', lhs, normal_cmd, { noremap = true, silent = true }) end
+local function eimap_keep_line(lhs, normal_cmd)  imap_keep_line(lhs, normal_cmd, { noremap = true, silent = true }) end
+
 -- Emacs-like cancel
 vim.api.nvim_set_keymap("c", "<C-g>", "<C-c>", { noremap = true, silent = true })
 
@@ -60,8 +71,6 @@ vmap("<leader>s", function() isearch_selected() end, {
     desc = "Search yanked text forward",
 })
 
-nmap("s", "/", { desc = "Isearch" })
-
 nmap("<leader><tab>s", ":source %<CR>", { desc = "Source lua file" })
 
 -- How to quit nvim?
@@ -81,18 +90,20 @@ map({ "n", "i", "v" }, "<C-f>", "<Right>", { noremap = true }) -- forward char
 map({ "n", "i", "v" }, "<C-a>", "<Home>", { noremap = true }) -- beginning of line
 map({ "n", "i", "v" }, "<C-e>", "<End>", { noremap = true }) -- end of line
 
-map({ "n", "i", "v" }, "C-v", "<C-o><C-d>", { silent = true }) -- Move half page down
-map({ "n", "i", "v" }, "M-v", "<C-o><C-u>", { silent = true }) -- Move half page up
+-- eimap("<C-v>", "11jzz") -- Move half page down
+-- eimap("<M-v>", "11kzz") -- Move half page up
 
-imap("<M-f>", "<C-o>w", { noremap = true }) -- forward word
-imap("<M-b>", "<C-o>b", { noremap = true }) -- backward word
-imap("<M-a>", "<C-o>(", { noremap = true }) -- move to start of sentence
-imap("<M-e>", "<C-o>)", { noremap = true }) -- move to end of sentence
-imap("<M-lt>", "<C-o>gg", { noremap = true }) -- move to start of buffer M-<
-imap("<M->>", "<C-o>G", { noremap = true }) -- move to end of buffer M->
+emap({"n", "i", "v"}, "<M-f>", "w") -- forward word
+emap({"n", "i", "v"}, "<M-b>", "b") -- backward word
+emap({"n", "i", "v"}, "<M-a>", "(") -- move to start of sentence
+emap({"n", "i", "v"}, "<M-e>", ")") -- move to end of sentence
+emap({"n", "i", "v"}, "<M-<LT>>", "gg") -- move to start of buffer M-<
+emap({"n", "i", "v"}, "<M-<GT>>", "G") -- move to end of buffer M->
 
-imap("<C-/>", "<C-o>u", { noremap = true }) -- undo
-imap("<C-\\>", "<C-o>R", { noremap = true }) -- redo
+nmap("s", "/", { desc = "Isearch" })
+
+eimap("<C-/>", "u") -- undo
+eimap("<C-\\>", "<C-r>") -- redo
 
 imap("<C-s>", "<C-o>/", { noremap = true }) -- search
 vmap("<C-x>s", 'y/<C-r>"<CR>', { noremap = true }) -- search selection
@@ -100,30 +111,32 @@ vmap("<C-x>s", 'y/<C-r>"<CR>', { noremap = true }) -- search selection
 imap("<M-x>", "<C-o>:", { noremap = true }) -- IDO?
 
 imap("<C-d>", "<Del>", { noremap = true }) -- Delete next char
-imap("<C-k>", "<C-o>d$", { noremap = true }) -- kill to end of line
-imap("<C-M-k>", "<C-o>dd", { noremap = true }) -- kill line
+eimap_keep_line("<C-k>", "d$l") -- kill to end of line
+eimap("<M-k>", "dd") -- kill line
 
-imap("<C-t>", "<Esc>xpi", { noremap = true }) -- transpose chars
-imap("<M-t>", "<Esc>daWWPi", { noremap = true }) -- transpose words
+eimap_keep_line("<C-t>", "xpi") -- transpose chars
+eimap_keep_line("<M-t>", "daWWPi") -- transpose words
 
-imap("<M-d>", "<Esc>dwi", { noremap = true }) -- kill word forward
-imap("<M-BS>", "<Esc>dbi", { noremap = true }) -- kill word backward
+eimap_keep_line('<M-d>', "de") -- Delete word forward
 
-imap("<M-u>", "<Esc>gUiwi", { noremap = true }) -- upcase word
-imap("<M-l>", "<Esc>guiwi", { noremap = true }) -- downcase word
-imap("<M-c>", "<Esc>gUiw~i", { noremap = true }) -- capitalize word
+eimap("<M-BS>", "db") -- kill word backward
+
+eimap("<M-u>", "gUiw") -- upcase word
+eimap("<M-l>", "guiw") -- downcase word
+eimap_keep_line("<M-c>", "gewguiwvgU") -- capitalize word
 
 imap("<C-_>", "<C-o>u", { noremap = true }) -- undo
 imap("<C-\\>", "<C-o><C-r>", { noremap = true }) -- redo
 
 -- Visual
 
-imap("<C-Space>", "<Esc>v", { noremap = true, silent = true }) -- Insert to Visual Mode
-vmap("<C-Space>", "<Esc>i", { noremap = true, silent = true }) -- Visual to Insert Mode
+imap("<C-Space>", "<Esc>lv") -- Insert to Visual Mode
+vmap("<C-Space>", "<Esc>i") -- Visual to Insert Mode
 
-vmap("<C-w>", "c<Esc>i", { noremap = true }) -- kill
-vmap("<C-y>", "p<Esc>i", { noremap = true }) -- yank
-vmap("<M-w>", "y<Esc>i", { noremap = true }) -- copy
+eimap("<C-y>", "p") -- yank
+vmap("<C-y>", "pi") -- yank
+vmap("<C-w>", "c") -- kill
+vmap("<M-w>", "yi") -- copy
 
 -- Move current line up
 imap("<M-p>", function()
