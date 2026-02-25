@@ -35,7 +35,7 @@ end
 return {
   "ej-shafran/compile-mode.nvim",
   version = "^5.0.0",
-  lazy = false,
+  cmd = { "Compile", "Recompile" },
   dependencies = {
     "nvim-lua/plenary.nvim",
     { "m00qek/baleia.nvim", tag = "v1.3.0" },
