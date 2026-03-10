@@ -9,6 +9,9 @@ return {
 
         local set = vim.keymap.set
 
+        set({ "n", "x" }, "<C-<>", function() mc.matchAddCursor(1) end)
+        set({ "n", "x" }, "<C->>", function() mc.matchAddCursor(-1) end)
+
         -- Add or skip cursor above/below the main cursor.
         set({ "n", "x" }, "<up>", function() mc.lineAddCursor(-1) end)
         set({ "n", "x" }, "<down>", function() mc.lineAddCursor(1) end)
