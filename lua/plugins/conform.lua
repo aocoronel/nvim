@@ -1,7 +1,7 @@
 return {
     "stevearc/conform.nvim",
     cmd = "ConformInfo",
-    ft = { "lua", "shell", "python", "json", "html", "css", "markdown", "rust", "toml" },
+    ft = { "lua", "shell", "python", "json", "html", "css", "markdown", "rust", "toml", "zig" },
     event = { "BufWritePre" },
     keys = {
         {
@@ -35,6 +35,7 @@ return {
                 sh = { "shfmt" },
                 toml = { "taplo" },
                 zsh = { "shfmt" },
+                zig = { "zig fmt" },
             },
             formatters = {
                 injected = { options = { ignore_errors = true } },
