@@ -43,8 +43,8 @@ return {
     "nvim-telescope/telescope.nvim",
     version = "*",
     version = false,
-    lazy = false,
+    lazy = true,
     dependencies = { "nvim-lua/plenary.nvim" },
-    cmd = "Telescope",
+    cmd = { "Telescope" },
     config = config,
 }
