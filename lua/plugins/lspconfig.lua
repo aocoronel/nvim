@@ -269,7 +269,6 @@ local config = function()
             usePlaceholders = true,
             completeUnimported = true,
             clangdFileStatus = true,
-            fallbackFlags = { "-std=c99" },
         },
     })
 end
