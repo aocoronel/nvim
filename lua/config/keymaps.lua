@@ -282,7 +282,7 @@ nmap("<leader>gX", ":Duck<CR>", { desc = "Search in DuckDuckGo" })
 
 nmap("<leader>Dj", "<CMD>Oil<CR>", { desc = "Oil" })
 nmap("<leader>Dh", "<CMD>Oil ~/<CR>", { desc = "Oil: Home" })
-nmap("<leader>Cc", "<CMD>Compile<CR>", { desc = "Compile" })
+nmap("<leader>C", "<CMD>Compile<CR>", { desc = "Compile" })
 
 vim.keymap.set("n", "<leader>Dg", function()
     local oil = require "oil"
