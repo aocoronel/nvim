@@ -25,6 +25,7 @@ return {
             formatters_by_ft = {
                 bash = { "shfmt" },
                 c = { "clang-format" },
+                odin = { "odinfmt" },
                 css = { "prettier" },
                 html = { "prettier" },
                 json = { "prettier" },
@@ -39,6 +40,11 @@ return {
             },
             formatters = {
                 injected = { options = { ignore_errors = true } },
+                odinfmt = {
+                    command = "odinfmt",
+                    args = { "-stdin" },
+                    stdin = true,
+                },
             },
         }
         return opts
