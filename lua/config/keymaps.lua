@@ -19,14 +19,12 @@ local function nmap_keep_line(lhs, normal_cmd, opts) map_keep_line("n", lhs, nor
 
 local function emap(map, lhs, normal_cmd, opts)
     opts = opts or {}
-    vim.keymap.set(map, lhs, function()
-        vim.cmd("normal! " .. normal_cmd)
-    end, opts)
+    vim.keymap.set(map, lhs, function() vim.cmd("normal! " .. normal_cmd) end, opts)
 end
 
-local function eimap(lhs, normal_cmd)  emap('i', lhs, normal_cmd, { noremap = true, silent = true }) end
-local function evmap(lhs, normal_cmd)  emap('v', lhs, normal_cmd, { noremap = true, silent = true }) end
-local function eimap_keep_line(lhs, normal_cmd)  imap_keep_line(lhs, normal_cmd, { noremap = true, silent = true }) end
+local function eimap(lhs, normal_cmd) emap("i", lhs, normal_cmd, { noremap = true, silent = true }) end
+local function evmap(lhs, normal_cmd) emap("v", lhs, normal_cmd, { noremap = true, silent = true }) end
+local function eimap_keep_line(lhs, normal_cmd) imap_keep_line(lhs, normal_cmd, { noremap = true, silent = true }) end
 
 -- Emacs-like cancel
 vim.api.nvim_set_keymap("c", "<C-g>", "<C-c>", { noremap = true, silent = true })
@@ -38,9 +36,9 @@ vim.keymap.set("n", "<leader>tt", function()
 end, { desc = "Open st in current directory" })
 
 local config = { virtual_text = false, signs = false, underline = false }
-vim.keymap.set('n', '<leader>tv', function()
-  config.virtual_text = not config.virtual_text
-  vim.diagnostic.config(config)
+vim.keymap.set("n", "<leader>tv", function()
+    config.virtual_text = not config.virtual_text
+    vim.diagnostic.config(config)
 end)
 
 function isearch_selected()
@@ -93,12 +91,12 @@ map({ "n", "i", "v" }, "<C-e>", "<End>", { noremap = true }) -- end of line
 -- eimap("<C-v>", "11jzz") -- Move half page down
 -- eimap("<M-v>", "11kzz") -- Move half page up
 
-emap({"n", "i", "v"}, "<M-f>", "w") -- forward word
-emap({"n", "i", "v"}, "<M-b>", "b") -- backward word
-emap({"n", "i", "v"}, "<M-a>", "(") -- move to start of sentence
-emap({"n", "i", "v"}, "<M-e>", ")") -- move to end of sentence
-emap({"n", "i", "v"}, "<M-<LT>>", "gg") -- move to start of buffer M-<
-emap({"n", "i", "v"}, "<M-<GT>>", "G") -- move to end of buffer M->
+emap({ "n", "i", "v" }, "<M-f>", "w") -- forward word
+emap({ "n", "i", "v" }, "<M-b>", "b") -- backward word
+emap({ "n", "i", "v" }, "<M-a>", "(") -- move to start of sentence
+emap({ "n", "i", "v" }, "<M-e>", ")") -- move to end of sentence
+emap({ "n", "i", "v" }, "<M-<LT>>", "gg") -- move to start of buffer M-<
+emap({ "n", "i", "v" }, "<M-<GT>>", "G") -- move to end of buffer M->
 
 nmap("s", "/", { desc = "Isearch" })
 
@@ -117,7 +115,7 @@ eimap("<M-k>", "dd") -- kill line
 eimap_keep_line("<C-t>", "xpi") -- transpose chars
 eimap_keep_line("<M-t>", "daWWPi") -- transpose words
 
-eimap_keep_line('<M-d>', "de") -- Delete word forward
+eimap_keep_line("<M-d>", "de") -- Delete word forward
 
 eimap("<M-BS>", "db") -- kill word backward
 
@@ -311,6 +309,9 @@ nmap(
     end,
     { desc = "Find ~/dev files" }
 )
+
+nmap("<leader>gg", "<cmd>Neogit<cr>", { desc = "Show Neogit UI" })
+
 nmap("<leader>fc", "<CMD>Telescope find_files cwd=~/.config/nvim<CR>", { desc = "Find Nvim Configs" })
 nmap("<leader>fs", "<CMD>Telescope lsp_document_symbols<CR>", { desc = "Find Definitions" })
 
@@ -434,3 +435,64 @@ end)
 
 vmap("ga", ":EasyAlign<CR>") -- save file
 nmap("ga", "<CMD>EasyAlign<CR>", { desc = "Quit All" })
+
+nmap("<leader>ca", "<cmd>ScissorsAddNewSnippet<cr>", { desc = "[S]nippet [A]dd" })
+nmap("<leader>ce", "<cmd>ScissorsEditSnippet<cr>", { desc = "[S]nippet [E]dit" })
+
+multicursor = require "multicursor-nvim"
+map({ "n", "x" }, "<C-<>", function() multicursor.matchAddCursor(1) end)
+map({ "n", "x" }, "<C->>", function() multicursor.matchAddCursor(-1) end)
+
+-- Add or skip cursor above/below the main cursor.
+map({ "n", "x" }, "<up>", function() multicursor.lineAddCursor(-1) end)
+map({ "n", "x" }, "<down>", function() multicursor.lineAddCursor(1) end)
+map({ "n", "x" }, "<leader><up>", function() multicursor.lineSkipCursor(-1) end)
+map({ "n", "x" }, "<leader><down>", function() multicursor.lineSkipCursor(1) end)
+
+-- Add or skip adding a new cursor by matching word/selection
+map({ "n", "x" }, "<A-C-j>", function() multicursor.matchAddCursor(1) end)
+map({ "n", "x" }, "<C-h>", function() multicursor.matchSkipCursor(1) end)
+map({ "n", "x" }, "<A-C-k>", function() multicursor.matchAddCursor(-1) end)
+map({ "n", "x" }, "<C-l>", function() multicursor.matchSkipCursor(-1) end)
+
+map("x", "S", multicursor.splitCursors) -- Split visual selections by regex.
+
+map("x", "M", multicursor.matchCursors) -- match new cursors within visual selections by regex.
+
+map("n", "<leader>gv", multicursor.restoreCursors, { desc = "Restore Cursors" }) -- bring back cursors if you accidentally clear them
+
+map({ "n", "x" }, "<leader>A", multicursor.matchAllAddCursors) -- Add a cursor for all matches of cursor word/selection in the document.
+
+map("x", "<leader>t", function() multicursor.transposeCursors(1) end) -- Rotate the text contained in each visual selection between cursors.
+map("x", "<leader>T", function() multicursor.transposeCursors(-1) end)
+
+-- Append/insert for each line of visual selections.
+map("x", "I", multicursor.insertVisual) -- Similar to block selection insertion.
+map("x", "A", multicursor.appendVisual)
+
+map({ "n", "x" }, "g<c-a>", multicursor.sequenceIncrement) -- Increment/decrement sequences, treating all cursors as one sequence.
+map({ "n", "x" }, "g<c-x>", multicursor.sequenceDecrement)
+
+map("n", "<leader>/n", function() multicursor.searchAddCursor(1) end) -- Add a cursor and jump to the next/previous search result.
+map("n", "<leader>/N", function() multicursor.searchAddCursor(-1) end)
+
+map("n", "<leader>/s", function() multicursor.searchSkipCursor(1) end) -- Jump to the next/previous search result without adding a cursor.
+map("n", "<leader>/S", function() multicursor.searchSkipCursor(-1) end)
+
+map("n", "<leader>/A", multicursor.searchAllAddCursors) -- Add a cursor to every search result in the buffer.
+
+-- Pressing `<leader>miwap` will create a cursor in every match of the
+-- string captured by `iw` inside range `ap`.
+-- This action is highly customizable, see `:h multicursor-operator`.
+map({ "n", "x" }, "<leader>m", multicursor.operator)
+
+map({ "n", "x" }, "]d", function() multicursor.diagnosticAddCursor(1) end) -- Add or skip adding a new cursor by matching diagnostics.
+map({ "n", "x" }, "[d", function() multicursor.diagnosticAddCursor(-1) end)
+map({ "n", "x" }, "]s", function() multicursor.diagnosticSkipCursor(1) end)
+map({ "n", "x" }, "[S", function() multicursor.diagnosticSkipCursor(-1) end)
+
+-- Press `mdip` to add a cursor for every error diagnostic in the range `ip`.
+map({ "n", "x" }, "md", function()
+    -- See `:h vim.diagnostic.GetOpts`.
+    multicursor.diagnosticMatchCursors { severity = vim.diagnostic.severity.ERROR }
+end)
