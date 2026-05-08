@@ -34,6 +34,9 @@ if not pack_ok then
     )
 end
 
+
+require "multicursor-nvim".setup()
+
 require "config.init"
 
 local elegantvagrant = {

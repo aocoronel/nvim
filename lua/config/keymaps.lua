@@ -249,13 +249,6 @@ nmap("[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
 nmap("]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning" })
 nmap("[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
 
--- highlights under cursor
-nmap("<leader>ui", vim.show_pos, { desc = "Inspect Pos" })
-nmap("<leader>uI", function()
-    vim.treesitter.inspect_tree()
-    vim.api.nvim_input "I"
-end, { desc = "Inspect Tree" })
-
 -- tabs
 nmap("<leader><tab>l", "<CMD>tablast<CR>", { desc = "Last Tab" })
 nmap("<leader><tab>o", "<CMD>tabonly<CR>", { desc = "Close Other Tabs" })
@@ -495,4 +488,22 @@ map({ "n", "x" }, "[S", function() multicursor.diagnosticSkipCursor(-1) end)
 map({ "n", "x" }, "md", function()
     -- See `:h vim.diagnostic.GetOpts`.
     multicursor.diagnosticMatchCursors { severity = vim.diagnostic.severity.ERROR }
+end)
+
+multicursor.addKeymapLayer(function(layerSet)
+    -- Select a different cursor as the main one.
+    layerSet({ "n", "x" }, "<left>", multicursor.prevCursor)
+    layerSet({ "n", "x" }, "<right>", multicursor.nextCursor)
+
+    -- Delete the main cursor.
+    layerSet({ "n", "x" }, "<leader>x", multicursor.deleteCursor)
+
+    -- Enable and clear cursors using escape.
+    layerSet("n", "<esc>", function()
+        if not multicursor.cursorsEnabled() then
+            multicursor.enableCursors()
+        else
+            multicursor.clearCursors()
+        end
+    end)
 end)
