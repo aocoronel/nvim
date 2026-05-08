@@ -200,8 +200,8 @@ nmap("<leader>bb", "<CMD>e #<CR>", { desc = "Switch to Other Buffer" })
 nmap("[b", "<CMD>bprevious<CR>", { desc = "Prev Buffer" })
 nmap("]b", "<CMD>bnext<CR>", { desc = "Next Buffer" })
 
-nmap("<leader>O", ":%bdelete|edit#<CR>", { desc = "Kill all buffer, but current" })
-nmap("<leader>o", "<CMD>only<CR>", { desc = "Kill all panes, but current" })
+nmap("<leader>O", ":%bdelete|edit#<CR>", { desc = "Kill all buffers" })
+nmap("<leader>o", "<CMD>only<CR>", { desc = "Kill all panes" })
 
 nmap(
     "<leader>ur",
@@ -320,7 +320,7 @@ nmap("<leader>:", "<CMD>Telescope command_history<CR>", { desc = "Command Histor
 nmap(
     "<leader>/",
     function() require("telescope.builtin").current_buffer_fuzzy_find(require "telescope.themes") end,
-    { desc = "[/] Fuzzily search in current buffer" }
+    { desc = "Search current buffer" }
 )
 
 nmap("gr", "<CMD>Telescope lsp_references<CR>", { desc = "References", nowait = true })
@@ -389,10 +389,6 @@ nmap(
     end,
     { desc = "[S]earch [/] in Open Files" }
 )
-
--- lazy.nvim
-
-nmap("<leader>l", "<CMD>Lazy<CR>", { desc = "Lazy" })
 
 -- Visual Selections
 
