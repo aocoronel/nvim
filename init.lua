@@ -13,7 +13,6 @@ local pack_ok, pack_err = pcall(vim.pack.add, {
     "https://github.com/neovim/nvim-lspconfig", -- depends on blink
     "https://github.com/norcalli/nvim-colorizer.lua",
     "https://github.com/nvim-telescope/telescope.nvim", -- depends on plenary
-    "https://github.com/rargo/nvim-global", -- depends on telescope
     "https://github.com/stevearc/conform.nvim",
     "https://github.com/terryma/vim-expand-region",
     "https://github.com/NeogitOrg/neogit", -- depends on plenary, diffview and telescope
@@ -33,7 +32,6 @@ if not pack_ok then
         vim.log.levels.WARN
     )
 end
-
 
 require "multicursor-nvim".setup()
 
