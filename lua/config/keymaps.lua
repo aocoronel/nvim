@@ -503,3 +503,7 @@ multicursor.addKeymapLayer(function(layerSet)
         end
     end)
 end)
+
+nmap("<leader>cf", function() require("conform").format() end, {
+    desc = "Format buffer using conform",
+})
